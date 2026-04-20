@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diensten &amp; Prijzen — [BERBER_ADI] Barbershop</title>
+  <meta name="description" content="[BERBER_ADI] Barbershop — diensten en prijslijst. Haarknippen, baardverzorging, klassiek scheren en meer.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ---- PAGE HEADER ---- */
+    .t-page-header {
+      padding: 72px 48px 64px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+    }
+
+    .t-page-header-inner {
+      max-width: 800px;
+    }
+
+    .t-page-title {
+      font-size: clamp(44px, 7vw, 100px);
+      margin-bottom: 20px;
+    }
+
+    .t-page-subtitle {
+      max-width: 560px;
+      margin-bottom: 0;
+    }
+
+    /* ---- NUMBERED SERVICES SECTION ---- */
+    .t-svc-section {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 64px;
+      padding: 80px 48px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+      align-items: start;
+    }
+
+    .t-svc-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .t-svc-row {
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 0;
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(17,17,17,0.13);
+    }
+
+    .t-svc-row:first-child {
+      padding-top: 0;
+    }
+
+    .t-svc-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .t-svc-row-num {
+      padding-top: 2px;
+    }
+
+    .t-svc-row-body {
+      padding-right: 8px;
+    }
+
+    .t-svc-price-tag {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+      color: #111;
+      border: 1.5px solid #111;
+      padding: 5px 18px;
+      margin-top: 10px;
+    }
+
+    .t-svc-photo-col {
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 120px;
+    }
+
+    /* ---- PRICING TABLE ---- */
+    .t-pricing-section {
+      padding: 80px 48px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+      border-top: 1px solid rgba(17,17,17,0.18);
+    }
+
+    .t-pricing-heading-wrap {
+      max-width: 680px;
+      margin-bottom: 52px;
+    }
+
+    .t-pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      border: 1px solid rgba(17,17,17,0.22);
+    }
+
+    .t-pricing-cat {
+      padding: 40px;
+    }
+
+    .t-pricing-cat:first-child {
+      border-right: 1px solid rgba(17,17,17,0.22);
+    }
+
+    .t-pricing-cat-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 26px;
+      letter-spacing: 4px;
+      color: #111;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1.5px solid #111;
+    }
+
+    .t-pricing-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 17px 0;
+      border-bottom: 1px solid rgba(17,17,17,0.09);
+    }
+
+    .t-pricing-item:last-child {
+      border-bottom: none;
+    }
+
+    .t-pricing-item-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111;
+      margin-bottom: 4px;
+      letter-spacing: 0.3px;
+    }
+
+    .t-pricing-item-desc {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .t-pricing-item-price {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 24px;
+      letter-spacing: 1px;
+      color: #111;
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    .t-pricing-note {
+      font-size: 12px;
+      color: #888;
+      margin-top: 18px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ---- CTA ---- */
+    .t-svc-cta {
+      padding: 100px 48px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 24px;
+    }
+
+    .t-svc-cta .t-cta-heading {
+      margin-bottom: 0;
+    }
+
+    .t-svc-cta .t-body-text {
+      max-width: 480px;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 1024px) {
+      .t-svc-section {
+        grid-template-columns: 1fr;
+        padding: 60px 32px;
+      }
+      .t-svc-photo-col {
+        display: none;
+      }
+      .t-pricing-grid {
+        grid-template-columns: 1fr;
+      }
+      .t-pricing-cat:first-child {
+        border-right: none;
+        border-bottom: 1px solid rgba(17,17,17,0.22);
+      }
+      .t-pricing-section {
+        padding: 60px 32px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .t-page-header {
+        padding: 48px 20px 40px;
+      }
+      .t-svc-section {
+        padding: 48px 20px;
+      }
+      .t-svc-row {
+        grid-template-columns: 56px 1fr;
+        padding: 36px 0;
+      }
+      .t-pricing-section {
+        padding: 48px 20px;
+      }
+      .t-pricing-cat {
+        padding: 28px 20px;
+      }
+      .t-svc-cta {
+        padding: 64px 20px;
+      }
+    }
+  </style>
+</head>
+<body class="t-body">
+
+  <!-- NAVIGATIE -->
+  <nav class="t-nav">
+    <div class="t-nav-top">
+      <span class="t-nav-location" data-en="Based in [SEHIR]">[SEHIR]</span>
+      <a href="index.html" class="t-nav-logo">
+        <div class="t-logo-icon">[L]</div>
+        <span class="t-logo-name">[BERBER_ADI]</span>
+      </a>
+      <div class="t-nav-right">
+        <div class="t-lang-switcher">
+          <button class="lang-btn active" data-lang="nl">NL</button>
+          <span class="t-lang-divider">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="t-menu-btn" id="t-menu-btn">Menu</button>
+      </div>
+    </div>
+    <div class="t-nav-links">
+      <a href="index.html" data-en="Home">Home</a>
+      <a href="hizmetler.html" class="active" data-en="Services">Diensten</a>
+      <a href="galeri.html" data-en="Gallery">Galerij</a>
+      <a href="contact.html" data-en="Contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="t-mobile-menu" id="t-mobile-menu">
+    <button class="t-mobile-close" id="t-mobile-close">&times;</button>
+    <a href="index.html" data-en="Home">Home</a>
+    <a href="hizmetler.html" data-en="Services">Diensten</a>
+    <a href="galeri.html" data-en="Gallery">Galerij</a>
+    <a href="randevu.html" data-en="Book Now">Reserveer</a>
+    <a href="tel:[TELEFON]">[TELEFON]</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <section class="t-page-header">
+    <div class="t-page-header-inner">
+      <h1 class="t-section-title t-page-title" data-en="SERVICES &amp; PRICES">DIENSTEN &amp; PRIJZEN</h1>
+      <p class="t-body-text t-page-subtitle" data-en="From precision haircuts to classic straight razor shaves — every service is performed with care, craft, and attention to detail.">Van precisie kapsels tot klassiek scheermes scheren — elke dienst wordt uitgevoerd met zorg, vakmanschap en oog voor detail.</p>
+    </div>
+  </section>
+
+  <!-- NUMBERED SERVICES -->
+  <section class="t-svc-section">
+
+    <div class="t-svc-list">
+
+      <div class="t-svc-row">
+        <div class="t-svc-row-num">
+          <span class="t-svc-num">01.</span>
+        </div>
+        <div class="t-svc-row-body">
+          <h2 class="t-svc-name" data-en="HAIR CUTS">HAARKNIPPEN</h2>
+          <p class="t-svc-desc" data-en="Whether you're after a subtle trim or a completely new look — our precision cuts are tailored to your face shape, lifestyle and personal style. From classic to modern fades, every cut is handled with care and craft.">Of u nu een subtiele bijpunt of een volledig nieuw kapsel wil — onze precisie knippen zijn afgestemd op uw gezichtsvorm, levensstijl en persoonlijke stijl. Van klassiek tot moderne fades, elke knip wordt met zorg en vakmanschap behandeld.</p>
+          <span class="t-svc-price-tag" data-en="FROM €[FIYAT]">VANAF €[FIYAT]</span>
+        </div>
+      </div>
+
+      <div class="t-svc-row">
+        <div class="t-svc-row-num">
+          <span class="t-svc-num">02.</span>
+        </div>
+        <div class="t-svc-row-body">
+          <h2 class="t-svc-name" data-en="BEARD CARE">BAARDVERZORGING</h2>
+          <p class="t-svc-desc" data-en="Expert beard trimming, contouring and shaping tailored to your style. We craft the perfect beard that complements your face and enhances your natural features. Includes hot towel and beard oil treatment.">Deskundige baard trimmen, contouren en vormgeven op maat van uw stijl. Wij creëren de perfecte baard die uw gezicht aanvult en uw natuurlijke kenmerken benadrukt. Inclusief warm doek en baardolie behandeling.</p>
+          <span class="t-svc-price-tag" data-en="FROM €[FIYAT]">VANAF €[FIYAT]</span>
+        </div>
+      </div>
+
+      <div class="t-svc-row">
+        <div class="t-svc-row-num">
+          <span class="t-svc-num">03.</span>
+        </div>
+        <div class="t-svc-row-body">
+          <h2 class="t-svc-name" data-en="CLASSIC SHAVE">KLASSIEK SCHEREN</h2>
+          <p class="t-svc-desc" data-en="Experience the timeless art of the straight razor shave. A hot towel to open the pores, a sharp blade for a flawless finish, and a cooling lotion to soothe — the complete traditional shaving ritual.">Ervaar de tijdloze kunst van het rechte scheermesscheren. Een warm doek om de poriën te openen, een scherp mes voor een vlekkeloos resultaat en een afkoelende lotion — het complete traditionele scheerritueel.</p>
+          <span class="t-svc-price-tag" data-en="FROM €[FIYAT]">VANAF €[FIYAT]</span>
+        </div>
+      </div>
+
+      <div class="t-svc-row">
+        <div class="t-svc-row-num">
+          <span class="t-svc-num">04.</span>
+        </div>
+        <div class="t-svc-row-body">
+          <h2 class="t-svc-name" data-en="HAIR + BEARD COMBO">HAAR + BAARD COMBO</h2>
+          <p class="t-svc-desc" data-en="The ultimate grooming experience. Hair and beard done together in a single session for a complete, polished look tailored exclusively to you. The most popular choice for a reason.">De ultieme verzorgingservaring. Haar en baard samen in één sessie voor een complete, verzorgde look — exclusief op maat voor u. Niet voor niets de meest populaire keuze.</p>
+          <span class="t-svc-price-tag" data-en="FROM €[FIYAT]">VANAF €[FIYAT]</span>
+        </div>
+      </div>
+
+      <div class="t-svc-row">
+        <div class="t-svc-row-num">
+          <span class="t-svc-num">05.</span>
+        </div>
+        <div class="t-svc-row-body">
+          <h2 class="t-svc-name" data-en="HAIR COLOUR">HAAR VERF</h2>
+          <p class="t-svc-desc" data-en="Single colour, highlights, ombre or balayage — our colouring services are handled with premium products to ensure vibrant, long-lasting results that complement your skin tone and personal aesthetic.">Één kleur, highlights, ombre of balayage — onze verfbehandelingen worden uitgevoerd met premium producten voor levendige, langdurige resultaten die passen bij uw huidskleur en persoonlijke stijl.</p>
+          <span class="t-svc-price-tag" data-en="FROM €[FIYAT]">VANAF €[FIYAT]</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="t-svc-photo-col">
+      <div class="t-img-ph" style="height: 420px;">FOTO 1</div>
+      <div class="t-img-ph" style="height: 300px; margin-top: 8px; width: 85%; margin-left: auto;">FOTO 2</div>
+    </div>
+
+  </section>
+
+  <!-- PRICING TABLE -->
+  <section class="t-pricing-section">
+
+    <div class="t-pricing-heading-wrap">
+      <h2 class="t-section-title" data-en="PRICING">PRIJSLIJST</h2>
+      <p class="t-body-text" data-en="Transparent pricing — no surprises. Prices are indicative and may vary based on hair length and service scope.">Transparante prijzen — geen verrassingen. Prijzen zijn indicatief en kunnen variëren op basis van haarlengte en omvang van de dienst.</p>
+    </div>
+
+    <div class="t-pricing-grid">
+
+      <!-- HAARKNIPPEN KOLOM -->
+      <div class="t-pricing-cat">
+        <div class="t-pricing-cat-title" data-en="HAIR CUTS">HAARKNIPPEN</div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Classic Cut">Klassieke Knip</div>
+            <div class="t-pricing-item-desc" data-en="Standard cut with clipper and scissors">Standaard knipbeurt met tondeuse en schaar</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Fade Cut">Fade Knip</div>
+            <div class="t-pricing-item-desc" data-en="High fade, mid fade or low fade options">High fade, mid fade of low fade opties</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Scissor Cut">Schaarknip</div>
+            <div class="t-pricing-item-desc" data-en="Full scissor cut for natural texture and movement">Volledige schaarknip voor natuurlijke textuur en beweging</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Children's Haircut">Kinderknippen</div>
+            <div class="t-pricing-item-desc" data-en="12 years and under">12 jaar en jonger</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Hair Colour">Haarverf</div>
+            <div class="t-pricing-item-desc" data-en="Single colour, ombre or balayage">Één kleur, ombre of balayage</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+      </div>
+
+      <!-- BAARDVERZORGING KOLOM -->
+      <div class="t-pricing-cat">
+        <div class="t-pricing-cat-title" data-en="BEARD CARE">BAARDVERZORGING</div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Beard Trim">Baard Bijwerken</div>
+            <div class="t-pricing-item-desc" data-en="Trimming and shaping the outline">Trimmen en bijwerken van de contouren</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Full Beard Care">Complete Baardverzorging</div>
+            <div class="t-pricing-item-desc" data-en="Trim, shape, hot towel and beard cream">Knipbeurt, vorming, warm doek en baardcrème</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Classic Straight Razor Shave">Klassiek Scheermes Scheren</div>
+            <div class="t-pricing-item-desc" data-en="Traditional straight razor, hot towel and aftershave lotion">Traditioneel recht scheermes, warm doek en aftershave lotion</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Hair + Beard Combo">Haar + Baard Combo</div>
+            <div class="t-pricing-item-desc" data-en="Haircut and beard care in one session">Knipbeurt en baardverzorging in één sessie</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+        <div class="t-pricing-item">
+          <div class="t-pricing-item-info">
+            <div class="t-pricing-item-name" data-en="Neck &amp; Eyebrow Tidy">Nek &amp; Wenkbrauw Bijwerken</div>
+            <div class="t-pricing-item-desc" data-en="Neck line and eyebrow clean-up after haircut">Neklijn en wenkbrauwreiniging na de knipbeurt</div>
+          </div>
+          <div class="t-pricing-item-price">€[FIYAT]</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <p class="t-pricing-note" data-en="* Prices are indicative and may vary based on service scope. Contact us for more information.">* Prijzen zijn indicatief en kunnen variëren op basis van de omvang van de dienst. Neem contact met ons op voor meer informatie.</p>
+
+  </section>
+
+  <!-- CTA -->
+  <section class="t-svc-cta">
+    <h2 class="t-cta-heading" data-en="READY FOR YOUR PERFECT LOOK?">KLAAR VOOR UW PERFECTE LOOK?</h2>
+    <p class="t-body-text" data-en="Book your appointment online — quick, easy and without waiting. We look forward to welcoming you.">Boek uw afspraak online — snel, eenvoudig en zonder wachten. Wij kijken ernaar uit u te verwelkomen.</p>
+    <a href="randevu.html" class="t-btn" data-en=".BOOK YOUR APPOINTMENT.">.BOEK JE AFSPRAAK.</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="t-footer">
+    <div class="t-footer-top">
+      <a href="mailto:[EMAIL]" class="t-footer-contact">EMAIL</a>
+      <a href="index.html" class="t-footer-logo">
+        <div class="t-logo-icon">[L]</div>
+        <span class="t-logo-name">[BERBER_ADI]</span>
+      </a>
+      <div class="t-footer-social">
+        <a href="#">FB</a>
+        <a href="#">TW</a>
+        <a href="#">IG</a>
+      </div>
+    </div>
+    <div class="t-footer-nav">
+      <a href="index.html" data-en="HOME">HOME</a>
+      <a href="hizmetler.html" data-en="SERVICES">DIENSTEN</a>
+      <a href="galeri.html" data-en="GALLERY">GALERIJ</a>
+      <a href="contact.html" data-en="CONTACT">CONTACT</a>
+    </div>
+    <div class="t-footer-bottom">
+      <p>&copy; 2025 [BERBER_ADI] Barbershop. <span data-en="All rights reserved.">Alle rechten voorbehouden.</span></p>
+      <p>[SEHIR]</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

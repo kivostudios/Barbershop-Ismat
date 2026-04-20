@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — [BERBER_ADI] Barbershop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="t-body a-body">
+
+  <!-- LOGIN -->
+  <div class="a-login" id="admin-login">
+    <div class="a-login-lang">
+      <button class="lang-btn active" data-lang="nl">NL</button>
+      <span class="t-lang-divider">|</span>
+      <button class="lang-btn" data-lang="en">EN</button>
+    </div>
+    <div class="a-login-card">
+      <div class="a-login-logo">[L]</div>
+      <div class="a-login-brand">[BERBER_ADI]</div>
+      <p class="a-login-sub" data-en="Admin Panel">Admin Paneli</p>
+      <div class="a-login-error" id="login-error" data-en="Incorrect password">Onjuist wachtwoord</div>
+      <form id="login-form" class="a-login-form">
+        <div class="a-form-group">
+          <label data-en="Password">Wachtwoord</label>
+          <input type="password" id="login-password" placeholder="••••••••" autofocus>
+        </div>
+        <button type="submit" class="t-btn t-btn-dark" style="width:100%;justify-content:center;">
+          <span data-en="Sign In">Inloggen</span>
+        </button>
+      </form>
+      <a href="index.html" class="a-back-link" data-en="← Back to website">← Terug naar website</a>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="a-dashboard" id="admin-dashboard" style="display:none;">
+
+    <!-- SIDEBAR -->
+    <aside class="a-sidebar">
+      <div class="a-sidebar-logo">
+        <div class="a-sidebar-icon">[L]</div>
+        <div>
+          <div class="a-sidebar-brand">[BERBER_ADI]</div>
+          <div class="a-sidebar-role">Admin</div>
+        </div>
+      </div>
+
+      <nav class="a-nav">
+        <a href="#" class="a-nav-item active" data-view="dashboard">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span data-en="Dashboard">Dashboard</span>
+        </a>
+        <a href="#" class="a-nav-item" data-view="bookings">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span data-en="Bookings">Reserveringen</span>
+        </a>
+        <a href="#" class="a-nav-item" data-view="today">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span data-en="Today">Vandaag</span>
+        </a>
+      </nav>
+
+      <div class="a-sidebar-footer">
+        <div class="a-lang">
+          <button class="lang-btn active" data-lang="nl">NL</button>
+          <span class="t-lang-divider" style="color:rgba(200,185,165,0.3);">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <a href="index.html" class="a-nav-item">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span data-en="Website">Website</span>
+        </a>
+        <button class="a-nav-item a-logout" id="btn-logout">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          <span data-en="Logout">Uitloggen</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="a-main">
+
+      <!-- DASHBOARD VIEW -->
+      <div class="admin-view active" id="view-dashboard">
+        <div class="a-topbar">
+          <h2 class="a-page-title" data-en="Dashboard">Dashboard</h2>
+          <div class="a-date" id="admin-today-date"></div>
+        </div>
+
+        <div class="a-stats">
+          <div class="a-stat-card">
+            <div class="a-stat-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div class="a-stat-value" id="stat-today">0</div>
+            <div class="a-stat-label" data-en="Today">Vandaag</div>
+          </div>
+          <div class="a-stat-card">
+            <div class="a-stat-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+            </div>
+            <div class="a-stat-value" id="stat-total">0</div>
+            <div class="a-stat-label" data-en="Total">Totaal</div>
+          </div>
+          <div class="a-stat-card">
+            <div class="a-stat-icon" style="color:#3d6b4f;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div class="a-stat-value" id="stat-confirmed">0</div>
+            <div class="a-stat-label" data-en="Confirmed">Bevestigd</div>
+          </div>
+          <div class="a-stat-card">
+            <div class="a-stat-icon" style="color:#7a5c10;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div class="a-stat-value" id="stat-pending">0</div>
+            <div class="a-stat-label" data-en="Pending">In afwachting</div>
+          </div>
+        </div>
+
+        <div class="a-section">
+          <div class="a-section-header">
+            <h3 class="a-section-title" data-en="Recent Bookings">Recente Reserveringen</h3>
+            <a href="#" class="a-link" data-view="bookings" data-en="View all →">Bekijk alles →</a>
+          </div>
+          <div id="recent-list"></div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS VIEW -->
+      <div class="admin-view" id="view-bookings">
+        <div class="a-topbar">
+          <h2 class="a-page-title" data-en="All Bookings">Alle Reserveringen</h2>
+          <div class="a-filters">
+            <button class="admin-filter-btn active" data-filter="all" data-en="All">Alle</button>
+            <button class="admin-filter-btn" data-filter="pending" data-en="Pending">In afwachting</button>
+            <button class="admin-filter-btn" data-filter="confirmed" data-en="Confirmed">Bevestigd</button>
+            <button class="admin-filter-btn" data-filter="cancelled" data-en="Cancelled">Geannuleerd</button>
+          </div>
+        </div>
+        <div id="bookings-list"></div>
+      </div>
+
+      <!-- TODAY VIEW -->
+      <div class="admin-view" id="view-today">
+        <div class="a-topbar">
+          <h2 class="a-page-title" data-en="Today">Vandaag</h2>
+          <div class="a-date" id="today-full-date"></div>
+        </div>
+        <div id="today-list"></div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — [BERBER_ADI] Barbershop</title>
+  <meta name="description" content="[BERBER_ADI] Barbershop — contact, openingstijden en adres.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-hero {
+      padding: 72px 48px 56px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+    }
+
+    .contact-col {
+      padding: 64px 48px;
+      border-right: 1px solid rgba(17,17,17,0.18);
+    }
+
+    .contact-col:last-child { border-right: none; }
+
+    .contact-col-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.4);
+      margin-bottom: 28px;
+    }
+
+    .contact-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 28px;
+    }
+
+    .contact-info-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.38);
+    }
+
+    .contact-info-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: #111;
+      text-decoration: none;
+      display: block;
+    }
+
+    .contact-info-value:hover { text-decoration: underline; }
+
+    .contact-hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(17,17,17,0.1);
+      font-size: 14px;
+      color: #333;
+    }
+
+    .contact-hours-row:first-child { border-top: 1px solid rgba(17,17,17,0.1); }
+
+    .contact-hours-day { font-weight: 700; letter-spacing: 1px; color: #111; }
+
+    .contact-hours-time { color: rgba(17,17,17,0.55); }
+
+    .contact-hours-closed { color: rgba(17,17,17,0.3); font-style: italic; }
+
+    .contact-social {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .contact-social a {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: rgba(17,17,17,0.5);
+      text-decoration: none;
+      border: 1px solid rgba(17,17,17,0.2);
+      padding: 8px 16px;
+      transition: all 0.15s;
+    }
+
+    .contact-social a:hover { background: #111; border-color: #111; color: #c8b9a5; }
+
+    .contact-map {
+      background: rgba(17,17,17,0.06);
+      height: 100%;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      color: rgba(17,17,17,0.3);
+    }
+
+    .contact-map svg { opacity: 0.3; }
+
+    .contact-map p { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+
+    .contact-cta {
+      padding: 72px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 768px) {
+      .contact-hero { padding: 48px 20px 40px; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .contact-col { padding: 40px 20px; border-right: none; border-bottom: 1px solid rgba(17,17,17,0.12); }
+      .contact-col:last-child { border-bottom: none; }
+      .contact-cta { padding: 48px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body class="t-body">
+
+  <!-- NAVIGATIE -->
+  <nav class="t-nav">
+    <div class="t-nav-top">
+      <span class="t-nav-location" data-en="Based in [SEHIR]">[SEHIR]</span>
+      <a href="index.html" class="t-nav-logo">
+        <div class="t-logo-icon">[L]</div>
+        <span class="t-logo-name">[BERBER_ADI]</span>
+      </a>
+      <div class="t-nav-right">
+        <div class="t-lang-switcher">
+          <button class="lang-btn active" data-lang="nl">NL</button>
+          <span class="t-lang-divider">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="t-menu-btn" id="t-menu-btn">Menu</button>
+      </div>
+    </div>
+    <div class="t-nav-links">
+      <a href="index.html" data-en="Home">Home</a>
+      <a href="hizmetler.html" data-en="Services">Diensten</a>
+      <a href="galeri.html" data-en="Gallery">Galerij</a>
+      <a href="contact.html" class="active" data-en="Contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="t-mobile-menu" id="t-mobile-menu">
+    <button class="t-mobile-close" id="t-mobile-close">&times;</button>
+    <a href="index.html" data-en="Home">Home</a>
+    <a href="hizmetler.html" data-en="Services">Diensten</a>
+    <a href="galeri.html" data-en="Gallery">Galerij</a>
+    <a href="contact.html" data-en="Contact">Contact</a>
+    <a href="tel:[TELEFON]">[TELEFON]</a>
+  </div>
+
+  <!-- HERO -->
+  <div class="contact-hero">
+    <h1 class="t-section-title" data-en="GET IN TOUCH.">NEEM CONTACT OP.</h1>
+    <p class="t-body-text" style="max-width:560px;" data-en="We are here for all your questions. Come visit us or reach out via phone, email or social media. We look forward to welcoming you.">
+      Wij zijn er voor al uw vragen. Kom langs of neem contact op via telefoon, e-mail of sociale media. Wij verwelkomen u graag.
+    </p>
+  </div>
+
+  <!-- CONTACT INFO + HOURS -->
+  <div class="contact-grid">
+
+    <!-- LEFT: Contact info -->
+    <div class="contact-col">
+      <div class="contact-col-title" data-en="Contact Information">Contactgegevens</div>
+
+      <div class="contact-info-item">
+        <span class="contact-info-label" data-en="Address">Adres</span>
+        <span class="contact-info-value">[ADRES]</span>
+        <span class="contact-info-value" style="font-family:'Manrope',sans-serif;font-size:14px;letter-spacing:0;color:rgba(17,17,17,0.5);">[SEHIR]</span>
+      </div>
+
+      <div class="contact-info-item">
+        <span class="contact-info-label" data-en="Phone">Telefoon</span>
+        <a href="tel:[TELEFON]" class="contact-info-value">[TELEFON]</a>
+      </div>
+
+      <div class="contact-info-item">
+        <span class="contact-info-label" data-en="Email">E-mail</span>
+        <a href="mailto:[EMAIL]" class="contact-info-value">[EMAIL]</a>
+      </div>
+
+      <div class="contact-info-item" style="margin-top:8px;">
+        <span class="contact-info-label" data-en="Follow Us">Volg Ons</span>
+        <div class="contact-social">
+          <a href="#">FB</a>
+          <a href="#">IG</a>
+          <a href="#">TW</a>
+        </div>
+      </div>
+
+      <!-- Map placeholder -->
+      <div class="contact-map" style="margin-top:32px;min-height:200px;">
+        <!-- Replace with: <iframe src="https://maps.google.com/..." width="100%" height="100%" style="border:0;" loading="lazy"></iframe> -->
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <p data-en="MAP PLACEHOLDER">KAART PLACEHOLDER</p>
+      </div>
+    </div>
+
+    <!-- RIGHT: Opening hours -->
+    <div class="contact-col">
+      <div class="contact-col-title" data-en="Opening Hours">Openingstijden</div>
+
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Monday">Maandag</span>
+        <span class="contact-hours-time">09:00 – 20:00</span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Tuesday">Dinsdag</span>
+        <span class="contact-hours-time">09:00 – 20:00</span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Wednesday">Woensdag</span>
+        <span class="contact-hours-time">09:00 – 20:00</span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Thursday">Donderdag</span>
+        <span class="contact-hours-time">09:00 – 20:00</span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Friday">Vrijdag</span>
+        <span class="contact-hours-time">09:00 – 20:00</span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Saturday">Zaterdag</span>
+        <span class="contact-hours-time">09:00 – 20:00</span>
+      </div>
+      <div class="contact-hours-row">
+        <span class="contact-hours-day" data-en="Sunday">Zondag</span>
+        <span class="contact-hours-time">10:00 – 18:00</span>
+      </div>
+
+      <p style="margin-top:24px;font-size:12px;color:rgba(17,17,17,0.4);line-height:1.6;" data-en="* Hours may differ on public holidays. Follow us on social media for up-to-date information.">
+        * Tijden kunnen afwijken op feestdagen. Volg ons op sociale media voor actuele informatie.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- CTA -->
+  <div class="contact-cta">
+    <div>
+      <h2 class="t-section-title" style="font-size:clamp(24px,4vw,52px);" data-en="READY FOR YOUR PERFECT LOOK?">KLAAR VOOR JE PERFECTE LOOK?</h2>
+      <p class="t-body-text" data-en="Book your appointment online in minutes.">Boek uw afspraak online in enkele minuten.</p>
+    </div>
+    <a href="randevu.html" class="t-btn t-btn-dark" data-en=".BOOK NOW.">.BOEK NU.</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="t-footer">
+    <div class="t-footer-top">
+      <a href="mailto:[EMAIL]" class="t-footer-contact">EMAIL</a>
+      <a href="index.html" class="t-footer-logo">
+        <div class="t-logo-icon">[L]</div>
+        <span class="t-logo-name">[BERBER_ADI]</span>
+      </a>
+      <div class="t-footer-social">
+        <a href="#">FB</a>
+        <a href="#">TW</a>
+        <a href="#">IG</a>
+      </div>
+    </div>
+    <div class="t-footer-nav">
+      <a href="index.html" data-en="HOME">HOME</a>
+      <a href="hizmetler.html" data-en="SERVICES">DIENSTEN</a>
+      <a href="galeri.html" data-en="GALLERY">GALERIJ</a>
+      <a href="contact.html" data-en="CONTACT">CONTACT</a>
+    </div>
+    <div class="t-footer-bottom">
+      <p>&copy; 2025 [BERBER_ADI] Barbershop. <span data-en="All rights reserved.">Alle rechten voorbehouden.</span></p>
+      <p>[SEHIR]</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerij — [BERBER_ADI] Barbershop</title>
+  <meta name="description" content="[BERBER_ADI] Barbershop galerij — bekijk ons werk. Haarknippen, baardverzorging en combo behandelingen in [SEHIR].">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* ---- PAGE HEADER ---- */
+    .t-page-header {
+      padding: 72px 48px 64px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+    }
+
+    .t-page-header-inner {
+      max-width: 800px;
+    }
+
+    .t-page-title {
+      font-size: clamp(44px, 7vw, 100px);
+      margin-bottom: 20px;
+    }
+
+    .t-page-subtitle {
+      max-width: 560px;
+      margin-bottom: 0;
+    }
+
+    /* ---- GALLERY SECTION ---- */
+    .t-gallery-section {
+      padding: 72px 48px 96px;
+      border-bottom: 1px solid rgba(17,17,17,0.18);
+    }
+
+    /* ---- FILTER BUTTONS ---- */
+    .t-gallery-filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .t-filter-btn {
+      padding: 10px 26px;
+      font-family: 'Manrope', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1.5px solid rgba(17,17,17,0.35);
+      color: rgba(17,17,17,0.55);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .t-filter-btn:hover {
+      border-color: #111;
+      color: #111;
+    }
+
+    .t-filter-btn.active {
+      background: #111;
+      border-color: #111;
+      color: #c8b9a5;
+    }
+
+    /* ---- GALLERY GRID ---- */
+    .t-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+    }
+
+    .t-gallery-item {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: #b5a690;
+    }
+
+    .t-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(100%);
+      transition: transform 0.5s ease, filter 0.4s ease;
+    }
+
+    .t-gallery-item:hover img {
+      transform: scale(1.06);
+      filter: grayscale(40%);
+    }
+
+    /* Beige placeholder for items without image */
+    .t-gallery-ph {
+      width: 100%;
+      height: 100%;
+      background: #b5a690;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      color: rgba(17,17,17,0.22);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 3px;
+      transition: transform 0.5s ease;
+    }
+
+    .t-gallery-item:hover .t-gallery-ph {
+      transform: scale(1.04);
+    }
+
+    .t-gallery-ph svg {
+      opacity: 0.3;
+    }
+
+    /* Hover overlay */
+    .t-gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(17,17,17,0.38);
+      opacity: 0;
+      transition: opacity 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .t-gallery-item:hover .t-gallery-overlay {
+      opacity: 1;
+    }
+
+    .t-gallery-zoom {
+      width: 46px;
+      height: 46px;
+      border: 2px solid #c8b9a5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      color: #c8b9a5;
+      font-weight: 300;
+      line-height: 1;
+    }
+
+    /* ---- LIGHTBOX ---- */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.93);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 40px;
+      color: #c8b9a5;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.3s;
+      user-select: none;
+    }
+
+    .lightbox-close:hover {
+      color: #fff;
+    }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 1024px) {
+      .t-gallery-section {
+        padding: 60px 32px 72px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .t-page-header {
+        padding: 48px 20px 40px;
+      }
+      .t-gallery-section {
+        padding: 48px 20px 64px;
+      }
+      .t-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 4px;
+      }
+      .t-gallery-filters {
+        gap: 8px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .t-gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      .t-filter-btn {
+        padding: 9px 18px;
+        font-size: 10px;
+      }
+    }
+  </style>
+</head>
+<body class="t-body">
+
+  <!-- NAVIGATIE -->
+  <nav class="t-nav">
+    <div class="t-nav-top">
+      <span class="t-nav-location" data-en="Based in [SEHIR]">[SEHIR]</span>
+      <a href="index.html" class="t-nav-logo">
+        <div class="t-logo-icon">[L]</div>
+        <span class="t-logo-name">[BERBER_ADI]</span>
+      </a>
+      <div class="t-nav-right">
+        <div class="t-lang-switcher">
+          <button class="lang-btn active" data-lang="nl">NL</button>
+          <span class="t-lang-divider">|</span>
+          <button class="lang-btn" data-lang="en">EN</button>
+        </div>
+        <button class="t-menu-btn" id="t-menu-btn">Menu</button>
+      </div>
+    </div>
+    <div class="t-nav-links">
+      <a href="index.html" data-en="Home">Home</a>
+      <a href="hizmetler.html" data-en="Services">Diensten</a>
+      <a href="galeri.html" class="active" data-en="Gallery">Galerij</a>
+      <a href="contact.html" data-en="Contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="t-mobile-menu" id="t-mobile-menu">
+    <button class="t-mobile-close" id="t-mobile-close">&times;</button>
+    <a href="index.html" data-en="Home">Home</a>
+    <a href="hizmetler.html" data-en="Services">Diensten</a>
+    <a href="galeri.html" data-en="Gallery">Galerij</a>
+    <a href="randevu.html" data-en="Book Now">Reserveer</a>
+    <a href="tel:[TELEFON]">[TELEFON]</a>
+  </div>
+
+  <!-- PAGE HEADER -->
+  <section class="t-page-header">
+    <div class="t-page-header-inner">
+      <h1 class="t-section-title t-page-title" data-en="OUR GALLERY">ONZE GALERIJ</h1>
+      <p class="t-body-text t-page-subtitle" data-en="A selection of our work — precision cuts, beard styling and complete transformations. Every look tells a story.">Een selectie van ons werk — precisie kapsels, baardstyling en complete transformaties. Elk look vertelt een verhaal.</p>
+    </div>
+  </section>
+
+  <!-- GALLERY SECTION -->
+  <section class="t-gallery-section">
+
+    <!-- FILTER BUTTONS -->
+    <div class="t-gallery-filters">
+      <button class="t-filter-btn active" data-filter="all" data-en="All">Alles</button>
+      <button class="t-filter-btn" data-filter="sac" data-en="Haircut">Haarknippen</button>
+      <button class="t-filter-btn" data-filter="sakal" data-en="Beard Care">Baardverzorging</button>
+      <button class="t-filter-btn" data-filter="kombo" data-en="Combo">Combo</button>
+    </div>
+
+    <!-- =====================================================
+         GALERIJ FOTO'S
+         Per item:
+         1. data-src="images/galeri-X.jpg"  — volledig pad naar foto
+         2. data-category="sac/sakal/kombo" — voor filterknop
+         3. Schakel de <img> tag in en verwijder de .t-gallery-ph placeholder
+         ===================================================== -->
+    <div class="t-gallery-grid">
+
+      <div class="t-gallery-item" data-src="images/galeri-1.jpg" data-category="sac">
+        <!-- <img src="images/galeri-1.jpg" alt="Haarknippen 1"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 1
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-2.jpg" data-category="sakal">
+        <!-- <img src="images/galeri-2.jpg" alt="Baardverzorging 1"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 2
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-3.jpg" data-category="sac">
+        <!-- <img src="images/galeri-3.jpg" alt="Haarknippen 2"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 3
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-4.jpg" data-category="kombo">
+        <!-- <img src="images/galeri-4.jpg" alt="Combo 1"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 4
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-5.jpg" data-category="sakal">
+        <!-- <img src="images/galeri-5.jpg" alt="Baardverzorging 2"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 5
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-6.jpg" data-category="sac">
+        <!-- <img src="images/galeri-6.jpg" alt="Haarknippen 3"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 6
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-7.jpg" data-category="kombo">
+        <!-- <img src="images/galeri-7.jpg" alt="Combo 2"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 7
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-8.jpg" data-category="sac">
+        <!-- <img src="images/galeri-8.jpg" alt="Haarknippen 4"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 8
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-9.jpg" data-category="sakal">
+        <!-- <img src="images/galeri-9.jpg" alt="Baardverzorging 3"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 9
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-10.jpg" data-category="kombo">
+        <!-- <img src="images/galeri-10.jpg" alt="Combo 3"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 10
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-11.jpg" data-category="sac">
+        <!-- <img src="images/galeri-11.jpg" alt="Haarknippen 5"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 11
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+      <div class="t-gallery-item" data-src="images/galeri-12.jpg" data-category="sakal">
+        <!-- <img src="images/galeri-12.jpg" alt="Baardverzorging 4"> -->
+        <div class="t-gallery-ph">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          FOTO 12
+        </div>
+        <div class="t-gallery-overlay"><div class="t-gallery-zoom">+</div></div>
+      </div>
+
+    </div>
+    <!-- Extra foto's toevoegen: kopieer een bovenstaand blok en pas nummers en categorie aan -->
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="t-footer">
+    <div class="t-footer-top">
+      <a href="mailto:[EMAIL]" class="t-footer-contact">EMAIL</a>
+      <a href="index.html" class="t-footer-logo">
+        <div class="t-logo-icon">[L]</div>
+        <span class="t-logo-name">[BERBER_ADI]</span>
+      </a>
+      <div class="t-footer-social">
+        <a href="#">FB</a>
+        <a href="#">TW</a>
+        <a href="#">IG</a>
+      </div>
+    </div>
+    <div class="t-footer-nav">
+      <a href="index.html" data-en="HOME">HOME</a>
+      <a href="hizmetler.html" data-en="SERVICES">DIENSTEN</a>
+      <a href="galeri.html" data-en="GALLERY">GALERIJ</a>
+      <a href="contact.html" data-en="CONTACT">CONTACT</a>
+    </div>
+    <div class="t-footer-bottom">
+      <p>&copy; 2025 [BERBER_ADI] Barbershop. <span data-en="All rights reserved.">Alle rechten voorbehouden.</span></p>
+      <p>[SEHIR]</p>
+    </div>
+  </footer>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox">
+    <span class="lightbox-close">&times;</span>
+    <img src="" alt="Galerij foto">
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    // ---- Gallery filter (t-filter-btn / t-gallery-item) ----
+    (function () {
+      var filterBtns = document.querySelectorAll('.t-filter-btn');
+      var galleryItems = document.querySelectorAll('.t-gallery-item');
+
+      filterBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          // Toggle active state on buttons
+          filterBtns.forEach(function (b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+
+          var filter = btn.dataset.filter;
+
+          galleryItems.forEach(function (item) {
+            if (filter === 'all' || item.dataset.category === filter) {
+              item.style.display = '';
+            } else {
+              item.style.display = 'none';
+            }
+          });
+        });
+      });
+
+      // ---- Lightbox for t-gallery-item ----
+      var lightbox = document.querySelector('.lightbox');
+      var lightboxImg = lightbox ? lightbox.querySelector('img') : null;
+
+      galleryItems.forEach(function (item) {
+        item.addEventListener('click', function () {
+          var src = item.getAttribute('data-src');
+          if (lightboxImg && src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('open');
+            document.body.style.overflow = 'hidden';
+          }
+        });
+      });
+
+      var closeBtn = document.querySelector('.lightbox-close');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', closeLightbox);
+      }
+      if (lightbox) {
+        lightbox.addEventListener('click', function (e) {
+          if (e.target === lightbox) closeLightbox();
+        });
+      }
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') closeLightbox();
+      });
+
+      function closeLightbox() {
+        if (lightbox) lightbox.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+    }());
+  </script>
+</body>
+</html>
