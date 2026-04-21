@@ -1,9 +1,12 @@
 // ============================================
-// ADMIN PANEL — JavaScript
+// ADMIN PANEL — JavaScript (Supabase)
 // ============================================
 
-const ADMIN_PASSWORD = 'barber2025'; // Wijzig dit wachtwoord!
-const BOOKINGS_KEY = 'barber_bookings';
+const SUPABASE_URL = 'https://tpnmhqfkztcmxpzbwgnp.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRwbm1ocWZrenRjbXhwemJ3Z25wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3NzExNjIsImV4cCI6MjA5MjM0NzE2Mn0.Mm18lnD86Np5uYuZAIMCF6_TCLv-E7yj8MlRP88pP_k';
+const db = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+const ADMIN_PASSWORD = 'barber2025';
 const AUTH_KEY = 'barber_admin_auth';
 const LANG_KEY = 'barber_lang';
 
@@ -15,13 +18,15 @@ const i18n = {
     pending: 'In afwachting', confirmed: 'Bevestigd', cancelled: 'Geannuleerd',
     confirm: 'Bevestig', cancel: 'Annuleer', delete: 'Verwijder',
     noBookings: 'Nog geen reserveringen.', noFiltered: 'Geen reserveringen gevonden.',
-    noToday: 'Geen afspraken vandaag.', deleteConfirm: 'Reservering verwijderen?'
+    noToday: 'Geen afspraken vandaag.', deleteConfirm: 'Reservering verwijderen?',
+    dbError: 'Database fout. Probeer opnieuw.'
   },
   en: {
     pending: 'Pending', confirmed: 'Confirmed', cancelled: 'Cancelled',
     confirm: 'Confirm', cancel: 'Cancel', delete: 'Delete',
     noBookings: 'No bookings yet.', noFiltered: 'No bookings found.',
-    noToday: 'No appointments today.', deleteConfirm: 'Delete this booking?'
+    noToday: 'No appointments today.', deleteConfirm: 'Delete this booking?',
+    dbError: 'Database error. Please try again.'
   }
 };
 
@@ -30,14 +35,6 @@ function t(key) { return i18n[currentLang][key]; }
 function months() { return currentLang === 'en' ? monthsEn : monthsNl; }
 
 // ---- HELPERS ----
-function getBookings() {
-  return JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]');
-}
-
-function saveBookings(bookings) {
-  localStorage.setItem(BOOKINGS_KEY, JSON.stringify(bookings));
-}
-
 function todayStr() {
   const d = new Date();
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
@@ -90,74 +87,68 @@ function emptyState(msg) {
   return `<div class="admin-empty">${msg}</div>`;
 }
 
+// ---- FETCH FROM SUPABASE ----
+async function fetchAllBookings() {
+  if (!db) return [];
+  const { data, error } = await db.from('bookings').select('*').order('created_at', { ascending: false });
+  if (error) { console.error('Supabase fetch error:', error); return []; }
+  return data || [];
+}
+
 // ---- STATUS ACTIONS ----
-window.updateStatus = function(id, status) {
-  const bookings = getBookings();
-  const idx = bookings.findIndex(b => String(b.id) === String(id));
-  if (idx === -1) return;
-  bookings[idx].status = status;
-  saveBookings(bookings);
+window.updateStatus = async function(id, status) {
+  if (!db) return;
+  const { error } = await db.from('bookings').update({ status }).eq('id', id);
+  if (error) { alert(t('dbError')); return; }
   renderAll();
 };
 
-window.deleteBooking = function(id) {
+window.deleteBooking = async function(id) {
   if (!confirm(t('deleteConfirm'))) return;
-  const bookings = getBookings().filter(b => String(b.id) !== String(id));
-  saveBookings(bookings);
+  if (!db) return;
+  const { error } = await db.from('bookings').delete().eq('id', id);
+  if (error) { alert(t('dbError')); return; }
   renderAll();
 };
 
 // ---- RENDER ----
-function renderStats() {
-  const bookings = getBookings();
+let currentFilter = 'all';
+
+async function renderAll() {
+  const bookings = await fetchAllBookings();
+
+  // Stats
   const today = todayStr();
   document.getElementById('stat-today').textContent = bookings.filter(b => b.date === today).length;
   document.getElementById('stat-total').textContent = bookings.length;
   document.getElementById('stat-confirmed').textContent = bookings.filter(b => b.status === 'confirmed').length;
   document.getElementById('stat-pending').textContent = bookings.filter(b => b.status === 'pending').length;
-}
 
-function renderRecent() {
-  const bookings = getBookings().slice(-5).reverse();
-  const el = document.getElementById('recent-list');
-  if (!el) return;
-  el.innerHTML = bookings.length
-    ? bookings.map(bookingRow).join('')
-    : emptyState(t('noBookings'));
-}
+  // Recent (last 5)
+  const recentEl = document.getElementById('recent-list');
+  if (recentEl) {
+    const recent = bookings.slice(0, 5);
+    recentEl.innerHTML = recent.length ? recent.map(bookingRow).join('') : emptyState(t('noBookings'));
+  }
 
-let currentFilter = 'all';
+  // All bookings with filter
+  const allEl = document.getElementById('bookings-list');
+  if (allEl) {
+    const filtered = currentFilter === 'all' ? bookings : bookings.filter(b => b.status === currentFilter);
+    allEl.innerHTML = filtered.length ? filtered.map(bookingRow).join('') : emptyState(t('noFiltered'));
+  }
 
-function renderBookings() {
-  const all = getBookings().reverse();
-  const filtered = currentFilter === 'all' ? all : all.filter(b => b.status === currentFilter);
-  const el = document.getElementById('bookings-list');
-  if (!el) return;
-  el.innerHTML = filtered.length
-    ? filtered.map(bookingRow).join('')
-    : emptyState(t('noFiltered'));
-}
-
-function renderToday() {
-  const today = todayStr();
-  const bookings = getBookings().filter(b => b.date === today).sort((a,b) => a.time.localeCompare(b.time));
-  const el = document.getElementById('today-list');
-  if (!el) return;
-
-  const d = new Date();
-  const dateEl = document.getElementById('today-full-date');
-  if (dateEl) dateEl.textContent = `${d.getDate()} ${months()[d.getMonth()]} ${d.getFullYear()}`;
-
-  el.innerHTML = bookings.length
-    ? bookings.map(bookingRow).join('')
-    : emptyState(t('noToday'));
-}
-
-function renderAll() {
-  renderStats();
-  renderRecent();
-  renderBookings();
-  renderToday();
+  // Today
+  const todayEl = document.getElementById('today-list');
+  if (todayEl) {
+    const todayBookings = bookings.filter(b => b.date === today).sort((a, b) => a.time.localeCompare(b.time));
+    const dateEl = document.getElementById('today-full-date');
+    if (dateEl) {
+      const d = new Date();
+      dateEl.textContent = `${d.getDate()} ${months()[d.getMonth()]} ${d.getFullYear()}`;
+    }
+    todayEl.innerHTML = todayBookings.length ? todayBookings.map(bookingRow).join('') : emptyState(t('noToday'));
+  }
 }
 
 // ---- VIEWS ----
@@ -206,7 +197,6 @@ function setLanguage(lang) {
   localStorage.setItem(LANG_KEY, lang);
   document.documentElement.lang = lang;
   applyStaticTranslations(lang);
-  // Re-render dynamic content (bookings, dates)
   if (document.getElementById('admin-dashboard').style.display !== 'none') {
     const d = new Date();
     const dateEl = document.getElementById('admin-today-date');
@@ -221,20 +211,16 @@ function checkAuth() {
 
 // ---- INIT ----
 document.addEventListener('DOMContentLoaded', () => {
-  // Apply saved language on load
   applyStaticTranslations(currentLang);
 
-  // Language button handlers
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
   });
 
-  // Auto-login if already authenticated
   if (checkAuth()) {
     showDashboard();
   }
 
-  // Login form
   document.getElementById('login-form')?.addEventListener('submit', (e) => {
     e.preventDefault();
     const pw = document.getElementById('login-password').value;
@@ -248,13 +234,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Logout
   document.getElementById('btn-logout')?.addEventListener('click', () => {
     localStorage.removeItem(AUTH_KEY);
     location.reload();
   });
 
-  // Nav links
   document.querySelectorAll('[data-view]').forEach(el => {
     el.addEventListener('click', (e) => {
       e.preventDefault();
@@ -262,13 +246,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Filter buttons
   document.querySelectorAll('.admin-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.admin-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       currentFilter = btn.dataset.filter;
-      renderBookings();
+      renderAll();
     });
   });
 });
