@@ -3287,23 +3287,23 @@ body.t-body::after {
 .booking-status.cancelled { background: rgba(239,68,68,0.1); color: #ef4444; }
 
 .admin-action-btn {
-  padding: 6px 12px;
-  font-size: 11px;
-  font-weight: 700;
+  padding: 6px 14px;
+  font-size: 10px;
+  font-weight: 800;
   font-family: var(--font-body);
-  letter-spacing: 0.5px;
-  border: 1px solid;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border: 2px solid;
   cursor: pointer;
   transition: all 0.2s;
-  background: transparent;
 }
 
-.admin-action-btn.confirm { border-color: #22c55e; color: #22c55e; }
-.admin-action-btn.confirm:hover { background: #22c55e; color: #000; }
-.admin-action-btn.cancel { border-color: #ef4444; color: #ef4444; }
-.admin-action-btn.cancel:hover { background: #ef4444; color: #fff; }
-.admin-action-btn.delete { border-color: var(--border-color); color: var(--text-secondary); }
-.admin-action-btn.delete:hover { border-color: #ef4444; color: #ef4444; }
+.admin-action-btn.confirm { background: #16a34a; border-color: #16a34a; color: #fff; }
+.admin-action-btn.confirm:hover { background: #15803d; border-color: #15803d; }
+.admin-action-btn.cancel { background: #dc2626; border-color: #dc2626; color: #fff; }
+.admin-action-btn.cancel:hover { background: #b91c1c; border-color: #b91c1c; }
+.admin-action-btn.delete { background: #374151; border-color: #374151; color: #fff; }
+.admin-action-btn.delete:hover { background: #111827; border-color: #111827; }
 
 .admin-empty {
   text-align: center;
